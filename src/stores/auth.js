@@ -22,6 +22,11 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
+    _router: null,
+    // Método setter para receber a instância do roteador
+    setRouter(router) {
+      this._router = router;
+    },
     // Ação de login
     async login(credentials) {
       this.loading = true;
@@ -29,9 +34,9 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         // Envia as credenciais para o endpoint de login da sua API
-        const response = await api.post('/login', credentials); // Substitua '/login' pelo endpoint real
+        const response = await api.post('/login', credentials);
 
-        // Assumindo que a API retorna { access_token: '...', user: {...} }
+        // Retorno da API
         const { access_token, user } = response.data;
 
         // Salva o token no estado e no localStorage
@@ -50,9 +55,9 @@ export const useAuthStore = defineStore('auth', {
           timeout: 2000,
         });
 
-        // Opcional: Redirecionar após o login
-        const router = useRouter();
-        router.push('/'); // Redireciona para a página inicial ou dashboard
+        if(this._router){
+          this._router.push('/dashboard'); // Redireciona para a página inicial ou dashboard
+        }
 
       } catch (err) {
         this.error = err.response?.data?.message || 'Credenciais inválidas. Tente novamente.';
@@ -91,7 +96,7 @@ export const useAuthStore = defineStore('auth', {
 
         // Redireciona para a página de login
         const router = useRouter();
-        router.push('/login');
+        this._router.push('/login');
       // }
     },
 

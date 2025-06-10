@@ -15,7 +15,10 @@
           App | Viagens
         </q-toolbar-title>
 
-        <div>Dev: Rodrigo Martins</div>
+        <div>
+          <span>Dev: Rodrigo Martins</span>
+          <span><q-btn @click="authStore.logout" color="dark" size="sm" icon-right="close" label="Sair" /></span>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -47,6 +50,8 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from 'stores/auth'
+const authStore = useAuthStore();
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [

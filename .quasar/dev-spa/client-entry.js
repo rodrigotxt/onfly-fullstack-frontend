@@ -146,7 +146,9 @@ createQuasarApp(createApp, quasarUserOptions)
       
       import('boot/axios'),
       
-      import('boot/auth-init')
+      import('boot/auth-init'),
+      
+      import('boot/pinia-router-connector')
       
     ]).then(bootFiles => {
       const boot = mapFn(bootFiles).filter(entry => typeof entry === 'function')
