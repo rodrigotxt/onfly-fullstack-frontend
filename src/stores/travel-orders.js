@@ -54,7 +54,28 @@ export const useTravelOrdersStore = defineStore('travelOrders', {
       } finally {
         this.loading = false;
       }
-    }
+    },
+    async updateOrderStatus (id, status) {
+      this.loading = true
+      this.error = null
+      let payload = {
+        status: status
+      };
+
+      try {
+        if(status == 'cancelado'){
+          payload.cancel_reason = prompt('Digite a razão do cancelamento');
+          if(payload.cancel_reason == null || payload.cancel_reason == '') return;
+        }
+        await api.put(`/travel/order/${id}/status`, payload);
+        this.fetchTravelOrders({ pagination: this.pagination });
+      } catch (err) {
+        this.error = 'Erro ao atualizar status do pedido: ' + (err.response?.data?.message || err.message);
+        console.error('Erro ao atualizar status do pedido:', err);
+      } finally {
+        this.loading = false;
+      }
+  },
   },
 
   getters: {

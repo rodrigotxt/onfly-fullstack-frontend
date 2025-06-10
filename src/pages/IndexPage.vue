@@ -1,10 +1,16 @@
 <template>
   <div class="q-pa-md">
+    <q-toolbar class="bg-grey text-white shadow-2 rounded-borders q-mb-md">
+      <q-icon name="card_travel" size="md" />
+      <q-toolbar-title>
+        Pedidos de Viagens
+      </q-toolbar-title>
+      <q-space />
+    </q-toolbar>
     <q-table
       class="my-sticky-virtscroll-table"
       flat
       bordered
-      title="Pedidos de Viagens"
       :rows="travelOrdersStore.orders"
       :columns="columns"
       row-key="id"
@@ -27,15 +33,29 @@
       </template>
       <template v-slot:body-cell-status="props">
         <q-td :props="props">
-          <q-badge v-if="props.row.status"
-            :color="getStatusColor(props.row.status)"
-            text-color="white"
-            class="q-px-sm q-py-xs"
-            rounded
-          >
-            {{ props.row.status }}
-          </q-badge>
-          <span v-if="!props.row.status">{{ props.row.status }}</span>
+          <div class="q-mt-md">
+            <q-fab
+              :label="props.row.status"
+              vertical-actions-align="left"
+              :color="getStatusColor(props.row.status)"
+              icon="keyboard_arrow_down"
+              direction="down"
+              padding="xs"
+            >
+              <q-fab-action :color="getStatusColor('recebido')" @click="updateOrderStatus(props.row.id, 'recebido')" label="Recebido" />
+              <q-fab-action :color="getStatusColor('aprovado')" @click="updateOrderStatus(props.row.id, 'aprovado')" label="Aprovado" />
+              <q-fab-action :color="getStatusColor('cancelado')" @click="updateOrderStatus(props.row.id, 'cancelado')" label="Cancelado" />
+            </q-fab>
+          </div>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-order_id="props">
+        <q-td :props="props">
+          <router-link
+            :to="{ name: 'order-detail', params: { id: props.row.id } }"
+            class="text-primary">
+          {{ props.row.order_id }}
+        </router-link>
         </q-td>
       </template>
       <template v-slot:body-cell-start_date="props">
@@ -68,11 +88,29 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useTravelOrdersStore } from 'stores/travel-orders';
+import { useRoute } from 'vue-router';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 // Instancia o store Pinia
 const travelOrdersStore = useTravelOrdersStore();
+
+const router = useRoute();
+
+const optionsStatus = [
+  {
+    label: 'Recebido',
+    value: 'recebido'
+  },
+  {
+    label: 'Aprovado',
+    value: 'aprovado'
+  },
+  {
+    label: 'Cancelado',
+    value: 'cancelado'
+  }
+]
 
 // Definição das colunas da tabela
 const columns = [
@@ -142,7 +180,9 @@ const columns = [
     sortable: true
   }
 ];
-
+function updateOrderStatus(orderId, newStatus) {
+  travelOrdersStore.updateOrderStatus(orderId, newStatus);
+}
 // Função para retornar a cor do q-badge com base no status
 function getStatusColor(status) {
   switch (status) {
@@ -167,6 +207,9 @@ function getStatusColor(status) {
     return dateString;
   }
 }
+function getOrderDetailsLink(orderId) {
+  return router.resolve({ name: 'order-detail', params: { id: orderId } }).href;
+}
 
 // Função que será chamada quando a tabela solicitar novos dados (paginação, ordenação)
 async function onRequest(props) {
@@ -184,4 +227,6 @@ onMounted(() => {
 .my-sticky-virtscroll-table
   /* Exemplo de estilo para tabela, ajuste conforme necessário */
   height: 400px
+.q-fab--opened
+    z-index: 999
 </style>
