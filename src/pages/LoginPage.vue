@@ -86,20 +86,40 @@ const onSubmit = async () => {
   width: 100%;
   max-width: 350px;
   z-index: 10;
-  background-color: #dde6ea73;
+  background: linear-gradient(#dde6ea73, #fff);
+  border-radius: 1em;
+  border: none;
+}
+.cloud1, .cloud2, .cloud3, .cloud4, .cloud5 {
+  position:absolute;
+  z-index: 0;
+}
+.plane{
+  z-index:3;
+}
+.moon, .sun {
+  z-index: 1;
+}
+.cloud1{
+  z-index: 3;
 }
 .airplane {
+  background-color: #61CADF; 
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  -webkit-animation: body 33.5s infinite linear !important;
+          animation: body 33.5s infinite linear !important;
 }
-body.desktop, body.mobile {
+body {
+  /*
   background-color: #61CADF !important; 
   width: 100% !important;
   overflow: hidden !important;
   -webkit-animation: body 33.5s infinite linear !important;
           animation: body 33.5s infinite linear !important;
+  */
 }
 .sun {
   position: absolute;
@@ -118,7 +138,7 @@ body.desktop, body.mobile {
   height: 80px;
   width: 80px;
   border-radius: 80px;
-  background-color: #f1c40f;
+  background-color: #F7F5C7;
   margin-top: 20px;
   margin-left: 300px;
   box-shadow: 0px 0px 180px 2px #FFFF75;
@@ -129,7 +149,7 @@ body.desktop, body.mobile {
   -webkit-animation: none;
           animation: none;
   margin-left: 1250px;
-  z-index: -2;
+  z-index: 2;
   -webkit-animation: moon 33.5s infinite linear;
           animation: moon 33.5s infinite linear;
 }
