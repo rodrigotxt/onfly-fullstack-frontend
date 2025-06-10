@@ -35,13 +35,12 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import { useTravelOrdersStore } from 'stores/travel-orders'; // Importe seu store
+import { useTravelOrdersStore } from 'stores/travel-orders';
 
 // Instancia o store Pinia
 const travelOrdersStore = useTravelOrdersStore();
 
 // Definição das colunas da tabela
-// Adapte as 'field's para corresponder às chaves do JSON da sua API
 const columns = [
   {
     name: 'order_id',
@@ -91,7 +90,6 @@ const columns = [
     name: 'user_name',
     label: 'Criado Por',
     align: 'left',
-    // Para campos aninhados como 'user.name', use uma função para 'field'
     field: row => row.user ? row.user.name : 'N/A',
     sortable: true
   },
@@ -106,7 +104,7 @@ const columns = [
     name: 'updated_by',
     label: 'Atualizado Por',
     align: 'left',
-    field: 'updated_by', // Se updated_by for um ID, você precisaria de um relacionamento para mostrar o nome
+    field: 'updated_by',
     sortable: true
   }
 ];
