@@ -16,7 +16,7 @@
         </q-toolbar-title>
 
         <div>
-          <span>Dev: Rodrigo Martins</span>
+          <span v-if="authStore.getUser" class="q-mr-sm">{{authStore.getUser.name}}</span> 
           <span><q-btn @click="authStore.logout" color="dark" size="sm" icon-right="close" label="Sair" /></span>
         </div>
       </q-toolbar>
@@ -65,19 +65,19 @@ const linksList = [
     title: 'Novo Pedido',
     caption: '',
     icon: 'chat',
-    link: '/orders/new'
+    link: '#/order/new'
   },
   {
     title: 'Aprovados',
     caption: 'Pedidos aprovados',
     icon: 'check',
-    link: '/orders/approved'
+    link: '#/orders/approved'
   },
   {
     title: 'Cancelados',
     caption: 'Pedidos cancelados',
     icon: 'cancel',
-    link: '/orders/canceled'
+    link: '#/orders/canceled'
   },
   {
     title: 'Feito com carinho.',
