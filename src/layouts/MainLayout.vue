@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Travel Orders App
+          App | Viagens
         </q-toolbar-title>
 
         <div>Dev: Rodrigo Martins</div>
@@ -51,46 +51,35 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Dashboard',
+    caption: '',
+    icon: 'dashboard',
+    link: ''
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
+    title: 'Novo Pedido',
+    caption: '',
     icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    link: '/orders/new'
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: 'Aprovados',
+    caption: 'Pedidos aprovados',
+    icon: 'check',
+    link: '/orders/approved'
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    title: 'Cancelados',
+    caption: 'Pedidos cancelados',
+    icon: 'cancel',
+    link: '/orders/canceled'
   },
   {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
+    title: 'Feito com carinho.',
+    caption: 'por @rodrigotxt',
     icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    target: '_blank',
+    link: 'https://github.com/rodrigotxt'
   }
 ]
 

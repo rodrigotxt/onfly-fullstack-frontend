@@ -2,7 +2,7 @@
   <q-item
     clickable
     tag="a"
-    target="_blank"
+    :target="props.target || '_self'"
     :href="props.link"
   >
     <q-item-section
