@@ -25,7 +25,39 @@
           <q-icon size="2em" :name="icon" />
         </div>
       </template>
-
+      <template v-slot:body-cell-status="props">
+        <q-td :props="props">
+          <q-badge v-if="props.row.status"
+            :color="getStatusColor(props.row.status)"
+            text-color="white"
+            class="q-px-sm q-py-xs"
+            rounded
+          >
+            {{ props.row.status }}
+          </q-badge>
+          <span v-if="!props.row.status">{{ props.row.status }}</span>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-start_date="props">
+        <q-td :props="props">
+          {{ formatDate(props.row.start_date, 'dd/MM/yyyy') }}
+        </q-td>
+      </template>
+      <template v-slot:body-cell-end_date="props">
+        <q-td :props="props">
+          {{ formatDate(props.row.end_date, 'dd/MM/yyyy') }}
+        </q-td>
+      </template>
+      <template v-slot:body-cell-created_at="props">
+        <q-td :props="props">
+          {{ formatDate(props.row.created_at, 'dd/MM/yyyy HH:mm:ss') }}
+        </q-td>
+      </template>
+      <template v-slot:body-cell-updated_at="props">
+        <q-td :props="props">
+          {{ formatDate(props.row.updated_at, 'dd/MM/yyyy HH:mm:ss') }}
+        </q-td>
+      </template>
     </q-table>
     <q-banner v-if="travelOrdersStore.hasError" class="bg-red-2 text-red-10 q-mt-md">
       {{ travelOrdersStore.error }}
@@ -36,6 +68,8 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useTravelOrdersStore } from 'stores/travel-orders';
+import { format, parseISO } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 // Instancia o store Pinia
 const travelOrdersStore = useTravelOrdersStore();
@@ -108,6 +142,31 @@ const columns = [
     sortable: true
   }
 ];
+
+// Função para retornar a cor do q-badge com base no status
+function getStatusColor(status) {
+  switch (status) {
+    case 'solicitado':
+      return 'blue-grey';
+    case 'aprovado':
+      return 'green';
+    case 'cancelado':
+      return 'red';
+    default:
+      return 'grey';
+  }}
+  function formatDate(dateString, formatPattern) {
+  if (!dateString) {
+    return '';
+  }
+  try {
+    const date = parseISO(dateString.replace(' ', 'T'));
+    return format(date, formatPattern, { locale: ptBR });
+  } catch (e) {
+    console.error('Erro ao formatar data:', dateString, e);
+    return dateString;
+  }
+}
 
 // Função que será chamada quando a tabela solicitar novos dados (paginação, ordenação)
 async function onRequest(props) {
