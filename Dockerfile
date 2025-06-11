@@ -11,7 +11,7 @@ COPY package*.json ./
 
 # Instala o Quasar CLI globalmente
 RUN npm install -g @quasar/cli
-
+COPY package.json package-lock.json ./
 RUN npm install --ignore-scripts
 
 # Copia o restante dos arquivos
@@ -23,4 +23,4 @@ RUN quasar prepare
 EXPOSE 9000
 
 # Comando para iniciar o servidor de desenvolvimento
-CMD ["quasar", "dev"]
+CMD ["quasar", "dev", "-p", "9000"]
