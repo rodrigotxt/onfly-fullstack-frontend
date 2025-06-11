@@ -76,6 +76,7 @@ export default defineConfig((/* ctx */) => {
     devServer: {
       // https: true,
       open: true,
+      allowedHosts: ['localhost', '127.0.0.1', '*.amazonaws.com', '*.rodrigo.inf.br'],
       vueDevtools: true
     },
 
