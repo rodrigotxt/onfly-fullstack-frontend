@@ -62,9 +62,12 @@ Certifique-se de ter os seguintes softwares instalados em sua máquina:
 
 ### Configuração Inicial
 
-1. **Clone o repositório:**
-2. **Inicialize o ambiente com Docker Compose:**
-Este comando irá copiar o arquivo de ambiente de exemplo, construir as imagens Docker (se necessário), instalar as dependências do Laravel e do Vue.js, e levantar os containers.
+1. **Clone o repositório: `git clone https://github.com/rodrigotxt/onfly-teste.git`**
+2. **Inicialize o ambiente com Docker Compose: `make init`**
+   
+Este comando irá clonar os submódulos (backend, frontend), copiar o arquivo de ambiente, construir as imagens Docker (se necessário), instalar as dependências do Laravel e do Vue.js, e levantar os containers.
+Também irá instalar todas dependências do fronten e backend, além de rodar migrations e seeders iniciais.
+
 *Se você já rodou `make init` uma vez e apenas parou os containers, pode usar `make up` para levantá-los novamente.*
 
 ### Acessando a Aplicação
@@ -155,3 +158,4 @@ Este projeto utiliza `make` para simplificar a execução de tarefas comuns:
 * Para o frontend: `docker exec <nome_do_container_frontend> npm install` ou `yarn install`
 
 * **Portas Ocupadas**: Se as portas 9000 ou 80 já estiverem em uso no seu sistema, o Docker não conseguirá iniciar os containers. Verifique os processos que estão usando essas portas ou ajuste o mapeamento de portas no `docker-compose.yml`.
+* **Usuários**: Ao inicializar o projeto é rodado um seeder para criar permissões e alguns usuários: `admin@example.com`, `manager@example.com`, `user@example.com` - para todos a senha padrão é `password`.
