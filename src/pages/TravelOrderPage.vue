@@ -193,8 +193,8 @@ export default defineComponent({
       loading.value = true;
       try {
         const response = await api.get(`/travel/order/${orderId}`);
-        travelOrder.value = response.data.data;
-        travelOrderOriginal.value = { ...response.data.data };
+        travelOrder.value = response.data;
+        travelOrderOriginal.value = { ...response.data };
       } catch (error) {
         console.error('Erro ao carregar pedido de viagem:', error);
         $q.notify({
@@ -253,7 +253,7 @@ export default defineComponent({
       try {
         let response;
         if (travelOrder.value.id) {
-          response = await api.put(`/travel/order/${travelOrder.value.id}`, travelOrder.value);
+          response = await api.post(`/travel/orders`, travelOrder.value);
         } else {
           response = await api.post('/travel/orders', travelOrder.value);
           travelOrder.value.id = response.data.id;
