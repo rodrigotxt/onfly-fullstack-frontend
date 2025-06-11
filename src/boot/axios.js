@@ -5,7 +5,7 @@ import { LocalStorage, Notify } from 'quasar' // Para recuperar o token do local
 // Importe o store de autenticação (se precisar acessar o token diretamente dele)
 import { useAuthStore } from 'stores/auth';
 
-const apiBaseUrl = process.env.VUE_APP_API_BASE_URL || 'http://backend.local/api';
+const apiBaseUrl = process.env.VUE_APP_API_BASE_URL || 'http://localhost/api';
 
 const api = axios.create({ baseURL: apiBaseUrl })
 
