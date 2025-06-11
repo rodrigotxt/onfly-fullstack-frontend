@@ -6,7 +6,7 @@
         Pedidos de Viagens
       </q-toolbar-title>
       <q-space />
-      <q-btn flat round icon="add" label="Novo Pedido" to="/travel-order/new" />
+      <q-btn flat round icon="add" label="Novo Pedido" to="order/new" />
     </q-toolbar>
 
     <!-- Seção de Filtros -->
