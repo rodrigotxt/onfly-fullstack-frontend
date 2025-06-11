@@ -283,7 +283,7 @@ async function onRequest(props) {
   // Chama a ação no store Pinia para buscar os pedidos com os parâmetros e filtros
   await travelOrdersStore.fetchTravelOrders({
     page,
-    rowsPerPage: parseInt(rowsPerPage), // <--- Garante que rowsPerPage seja um número
+    rowsPerPage: parseInt(rowsPerPage),
     sortBy,
     descending,
     filters

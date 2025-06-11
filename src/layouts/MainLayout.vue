@@ -71,13 +71,15 @@ const linksList = [
     title: 'Aprovados',
     caption: 'Pedidos aprovados',
     icon: 'check',
-    link: '#/orders/approved'
+    link: '#/orders/approved',
+    filter: { status: 'aprovado' }
   },
   {
     title: 'Cancelados',
     caption: 'Pedidos cancelados',
     icon: 'cancel',
-    link: '#/orders/canceled'
+    link: '#/orders/canceled',
+    filter: { status: 'cancelado' }
   },
   {
     title: 'Feito com carinho.',
