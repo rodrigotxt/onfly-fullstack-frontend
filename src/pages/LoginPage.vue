@@ -6,6 +6,7 @@
           <q-card-section class="text-center">
             <div class="text-grey-9 text-h5 text-weight-bold">Login</div>
             <div class="text-grey-8">Insira suas credenciais para acessar</div>
+            <div class="text-grey-9"><small>user@example.com / password</small></div>
           </q-card-section>
           <q-card-section>
             <q-form @submit="onSubmit" class="q-gutter-md">

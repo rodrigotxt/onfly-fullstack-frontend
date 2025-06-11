@@ -25,11 +25,11 @@
       <q-card-section>
         <q-form @submit="saveOrder" class="q-gutter-md">
           <div class="row q-col-gutter-md">
-            <div class="col-12 col-md-6 order_number text-center">
+            <div class="col-12 col-md-6 order_number text-center" v-if="route.name === 'order-detail'">
               Cód. Pedido: <br>
               <p><strong>{{ travelOrder.order_id }}</strong></p>
             </div>
-            <div class="col-12 col-md-6 status text-center">
+            <div class="col-12 col-md-6 status text-center" v-if="route.name === 'order-detail'">
               <div class="q-mt-md">
                   <q-fab
                     :readonly="!editMode"
@@ -122,7 +122,7 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 import { api } from 'boot/axios';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useTravelOrdersStore } from 'stores/travel-orders';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -136,6 +136,7 @@ export default defineComponent({
   setup() {
     const $q = useQuasar();
     const route = useRoute();
+    const router = useRouter();
 
     const travelOrder = ref({
       id: null,
@@ -252,9 +253,9 @@ export default defineComponent({
       try {
         let response;
         if (travelOrder.value.id) {
-          response = await api.put(`/travel-orders/${travelOrder.value.id}`, travelOrder.value);
+          response = await api.put(`/travel/order/${travelOrder.value.id}`, travelOrder.value);
         } else {
-          response = await api.post('/travel-orders', travelOrder.value);
+          response = await api.post('/travel/orders', travelOrder.value);
           travelOrder.value.id = response.data.id;
           travelOrder.value.order_id = response.data.order_id;
         }
@@ -268,13 +269,16 @@ export default defineComponent({
   
         editMode.value = false;
         travelOrderOriginal.value = { ...travelOrder.value };
+        router.push({ name: 'order-detail', params: { id: travelOrder.value.id } });
+
       } catch (error) {
         console.error('Erro ao salvar pedido de viagem:', error);
+        let msg = error?.response?.data?.message;
         $q.notify({
           color: 'negative',
           textColor: 'white',
           icon: 'error',
-          message: 'Erro ao salvar o pedido de viagem.'
+          message: 'Erro ao salvar o pedido de viagem.' + (msg ? ': ' + msg : '')
         });
       } finally {
         saving.value = false;
@@ -333,6 +337,7 @@ export default defineComponent({
       editMode,
       loading,
       saving,
+      route,
       toggleEditMode,
       cancelEdit,
       saveOrder,

@@ -4,18 +4,16 @@ import { api } from 'boot/axios'
 
 export const useTravelOrdersStore = defineStore('travelOrders', {
   state: () => ({
-    // Array para armazenar os dados dos pedidos
     orders: [],
-    // Objeto para armazenar os metadados da paginação
     pagination: {
-      sortBy: null, // Campo de ordenação
-      descending: false, // Direção da ordenação
-      page: 1, // Página atual
-      rowsPerPage: 15, // Itens por página
-      rowsNumber: 0 // Total de itens (meta.total da API)
+      sortBy: null,
+      descending: false,
+      page: 1,
+      rowsPerPage: 15,
+      rowsNumber: 0
     },
-    loading: false, // Estado de carregamento
-    error: null // Objeto de erro, se houver
+    loading: false,
+    error: null
   }),
 
   actions: {
@@ -25,16 +23,25 @@ export const useTravelOrdersStore = defineStore('travelOrders', {
       this.error = null
 
       try {
-        // Mapeia os parâmetros da tabela para os parâmetros da API
+        const { page, rowsPerPage, sortBy, descending, filters } = params;
+
+        // Mapeia os parâmetros da tabela e os filtros para os parâmetros da API
         const apiParams = {
-          page: params.pagination.page,
-          per_page: params.pagination.rowsPerPage,
-          // Adicione ordenação se precisar e sua API suportar
-          // sort_by: params.pagination.sortBy,
-          // descending: params.pagination.descending ? 'desc' : 'asc',
-          // ...outros filtros
+          page: page,
+          per_page: rowsPerPage,
+          sort_by: sortBy,
+          order: descending ? 'desc' : 'asc'
         };
 
+        // Adiciona os filtros se eles existirem e não forem vazios/nulos
+        if (filters && filters.destination) {
+          apiParams.destination = filters.destination;
+        }
+        if (filters && filters.status) {
+          apiParams.status = filters.status;
+        }
+
+        // Faz a chamada à API com os parâmetros construídos
         const response = await api.get('/travel/orders', { params: apiParams });
 
         // Atualiza o estado com os dados da API
@@ -44,9 +51,8 @@ export const useTravelOrdersStore = defineStore('travelOrders', {
         this.pagination.page = response.data.meta.current_page;
         this.pagination.rowsPerPage = response.data.meta.per_page;
         this.pagination.rowsNumber = response.data.meta.total;
-        // Mantenha sortBy e descending do request original se sua API suportar ordenação
-        this.pagination.sortBy = params.pagination.sortBy;
-        this.pagination.descending = params.pagination.descending;
+        this.pagination.sortBy = sortBy;
+        this.pagination.descending = descending;
 
       } catch (err) {
         this.error = 'Erro ao carregar pedidos: ' + (err.response?.data?.message || err.message);
@@ -65,21 +71,24 @@ export const useTravelOrdersStore = defineStore('travelOrders', {
       try {
         if(status == 'cancelado'){
           payload.cancel_reason = prompt('Digite a razão do cancelamento');
-          if(payload.cancel_reason == null || payload.cancel_reason == '') return;
+          // Verifica se o prompt foi cancelado (null) ou deixado em branco
+          if(payload.cancel_reason === null || payload.cancel_reason.trim() === '') {
+            this.loading = false; // Importante resetar o loading
+            return; // Aborta a operação se o usuário cancelar ou não digitar nada
+          }
         }
         await api.put(`/travel/order/${id}/status`, payload);
-        this.fetchTravelOrders({ pagination: this.pagination });
+        
       } catch (err) {
         this.error = 'Erro ao atualizar status do pedido: ' + (err.response?.data?.message || err.message);
         console.error('Erro ao atualizar status do pedido:', err);
       } finally {
         this.loading = false;
       }
-  },
+    },
   },
 
   getters: {
-    // Opcional: getters para acessar dados de forma computada
     getOrders: (state) => state.orders,
     getPagination: (state) => state.pagination,
     isLoading: (state) => state.loading,
