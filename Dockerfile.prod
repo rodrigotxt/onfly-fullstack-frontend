@@ -5,7 +5,7 @@ FROM node:18-alpine AS build-stage
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --ignore-scripts # <-- ADICIONADO AQUI
+RUN npm install --ignore-scripts
 
 COPY . .
 
