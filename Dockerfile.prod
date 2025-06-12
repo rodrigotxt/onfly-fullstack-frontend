@@ -5,6 +5,7 @@ FROM node:18-alpine AS build-stage
 WORKDIR /app
 
 COPY package*.json ./
+RUN npm install -g @quasar/cli
 RUN npm install --ignore-scripts
 
 COPY . .
