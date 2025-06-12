@@ -11,4 +11,5 @@ RUN npm install --ignore-scripts
 COPY . .
 
 # Construir a aplicação Quasar para produção
+# Removida a depuração de 'ls', agora que sabemos que o build funciona
 RUN quasar build -m spa --debug
