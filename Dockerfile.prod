@@ -4,11 +4,11 @@ FROM node:18-alpine AS build-stage
 
 WORKDIR /app
 
-COPY package*.json ./
 RUN npm install -g @quasar/cli
+COPY package*.json ./
 RUN npm install --ignore-scripts
 
 COPY . .
 
 # Construir a aplicação Quasar para produção
-RUN quasar build -m spa
+RUN quasar build -m spa --debug
