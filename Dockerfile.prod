@@ -1,0 +1,13 @@
+# Dockerfile para o frontend em produção (apenas build)
+
+FROM node:18-alpine AS build-stage
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Construir a aplicação Quasar para produção
+RUN quasar build -m spa
